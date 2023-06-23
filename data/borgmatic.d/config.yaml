@@ -7,7 +7,7 @@ one_file_system: true
 #   Passphase is set in varibable $BORG_PASSPHRASE
 #   encryption_passphrase: "DoNotForgetToChangeYourPassphrase"
 compression: lz4
-archive_name_format: 'backup-{now}'
+archive_name_format: "backup-{now}"
 
 keep_hourly: 2
 keep_daily: 7
@@ -16,14 +16,14 @@ keep_monthly: 12
 keep_yearly: 10
 
 checks:
-  - name: repository
-    frequency: 2 weeks
-  - name: archives
-    frequency: always
-  - name: extract
-    frequency: 2 weeks
-  - name: data
-    frequency: 1 month
+    - name: repository
+      frequency: 2 weeks
+    - name: archives
+      frequency: always
+    - name: extract
+      frequency: 2 weeks
+    - name: data
+      frequency: 1 month
 
 before_everything:
     - echo "Starting a backup job."
