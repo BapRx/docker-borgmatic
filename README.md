@@ -9,8 +9,7 @@
 
 ## Description ##
 
-A little container I wrote to automate my [Borgbackup](https://github.com/borgbackup)'s using the excellent [Borgmatic](https://github.com/witten/borgmatic).
-It uses cron to run the backups at a time you can configure in `data/borgmatic.d/crontab.txt`.
+This repository provides a Docker image for [Borgmatic](https://github.com/witten/borgmatic), a simple and efficient backup tool based on [Borgbackup](https://github.com/borgbackup). The image is designed to make it easy to set up and run Borgmatic (with Borg and optionally Cron daemon) within a Docker container, enabling you to streamline your backup process and ensure the safety of your data.
 
 > **Warning**
 > As of 2022-01-29 this image has switched to use [Supercronic](https://github.com/aptible/supercronic) instead of cron from alpine
