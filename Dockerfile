@@ -40,6 +40,7 @@ RUN <<EOF
     tar -C / -Jxpf /tmp/s6-overlay-symlinks-arch.tar.xz
 
     apk add --no-cache -U   \
+        acl-dev             \
         bash                \
         bash-completion     \
         bash-doc            \
@@ -48,19 +49,25 @@ RUN <<EOF
         curl                \
         findmnt             \
         fuse                \
-        acl-libs            \
+        gcc                 \
         libxxhash           \
+        linux-headers       \
         logrotate           \
+        lz4-dev             \
         lz4-libs            \
         mariadb-client      \
         mariadb-connector-c \
         mongodb-tools       \
-        openssl             \
+        musl-dev            \
+        openssl-dev         \
+        pkgconfig           \
         postgresql-client   \
         sshfs               \
         sqlite              \
         tzdata              \
-        xxhash
+        xxhash-dev          \
+        zstd-dev              \
+        btrfs-progs
     apk upgrade --no-cache
 EOF
 
