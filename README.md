@@ -20,7 +20,6 @@ This repository provides a Docker image for [borgmatic](https://github.com/witte
 ## Usage ##
 
 ### Prerequisites
-
 Before proceeding, ensure that you have [Docker](https://www.docker.com/) installed and properly configured on your system. Refer to the [Docker documentation](https://docs.docker.com/engine/install/) for installation instructions specific to your operating system. If you want to use [docker-compose](https://docs.docker.com/compose/install/), you may also need to install it seperately.
 Alternatively, you can also use [podman](https://podman.io/docs) to run this image.
 
@@ -31,7 +30,6 @@ Run this command to create data directories required by this image under your pr
 ```
 mkdir data/{borgmatic.d,repository,.config,.ssh,.cache}
 ```
-
 Configure a copy of borgmatic's [config.yaml](data/borgmatic.d/config.yaml) in `data/borgmatic.d` and run the container. You can modify any of the host mount point to fit your backup configuration.
 
 ```
@@ -86,7 +84,6 @@ The following volumes are available for mounting:
 | `/root/.cache/borg`            | A non-volatile place to store the borg chunk cache.                                                                                                   |
 
 To generate an example borgmatic configuration, run:
-
 ```
 docker exec borgmatic \
 bash -c "cd && borgmatic config generate -d /etc/borgmatic.d/config.yaml"
@@ -105,7 +102,6 @@ You can set the following environment variables:
 | `DOCKERCLI`       | Install docker client executable to manipulate (start/stop) containers before, or after backup. See [here](#starting-and-stopping-containers-from-hooks) for a detailed explanation. |
 
 You can also provide your own crontab file. If `data/borgmatic.d/crontab.txt` exists, `BACKUP_CRON` will be ignored in preference to it. In here you can add any other tasks you want ran
-
 ```
 0 1 * * * PATH=$PATH:/usr/local/bin /usr/local/bin/borgmatic --stats -v 0 2>&1
 ```
@@ -195,7 +191,7 @@ on_error:
   - apprise -vv -t "❌ FAILED" -b "$(cat /tmp/backup_run.log)" "mailtos://smtp.example.com:587?user=server@example.com&pass=YourSecurePassword&from=server@example.com&to=receiver@example.com"
 ```
 
-##### Note
+##### Note:
 
 If you don't want to send the log file, you can replace `-b "$(cat /tmp/backup_run.log)"` with a custom message like `-b "My message"`.
 
@@ -251,14 +247,13 @@ And as of borgmatic 1.8.9+, borgmatic's logs are automatically appended to the `
 
 Apprise provides a flexible and powerful way to handle notifications in Borgmatic. Be sure to check out the [official Apprise documentation](https://github.com/caronc/apprise#productivity-based-notifications) for a full range of options and capabilities.
 
+
 ## Other usage methods
 
 ### Run borgmatic like a binary through a container
-
 This image can be used to run borgmatic like a binary by passing the borgmatic command while running the container. It allows you to isolate your system and execute borgmatic commands without directly installing borgmatic on your host system and only keeping persistent data.
 
 To execute borgmatic commands, you can run your container by passing borgmatic subcommands:
-
 ```
 docker run --rm -it \
 MOUNT_FLAGS_HERE \
@@ -269,7 +264,6 @@ list
 **NOTE** Replace `MOUNT_FLAGS_HERE` placeholder with appropriate [mount flags](#volumes) and optionally [environment flags](#environment). [See above](#getting-started) for more clues.
 
 This will execute `borgmatic list` in your container. The idea is to create symlink to a script which executes this. Now create a new file `borgmatic-docker.sh` somewhere like your workspace or home directory.
-
 ```
 #!/bin/sh
 
@@ -278,18 +272,15 @@ MOUNT_FLAGS_HERE \
 ghcr.io/borgmatic-collective/borgmatic \
 "$@"
 ```
-
 Modify the above script as per your needs and copy it's path. Now you can either create a symbolic link to this script or add it as alias.
 
 1. Create a symlink to a directory that exists in your PATH variable e.g.:
-
 ```
 chmod +x /path/to/script/borgmatic-docker.sh
 sudo ln [-s] /path/to/script/borgmatic-docker.sh /usr/local/bin/borgmatic
 ```
 
 2. Or, to create an alias add this to your `~/.bashrc` or similar file for other shells.
-
 ```
 alias borgmatic="sh /path/to/script/borgmatic-docker.sh"
 ```
@@ -297,7 +288,6 @@ alias borgmatic="sh /path/to/script/borgmatic-docker.sh"
 **Tip** You can view list of available command line options in [borgmatic's docs](https://torsion.org/borgmatic/docs/reference/command-line/)
 
 ### Running as daemon
-
 To keep the container always running for continous backup, you can run it in detached mode. If you do not pass the command, by default it'll start the cron daemon which will run borgmatic at interval set in crontab.txt file.
 
 ```
@@ -320,7 +310,6 @@ Use docker compose for easily management of your borgmatic container. You can al
 
 <!-- Configure .env -->
 1. Copy `.env.template` to `.env` and edit it to your needs.
-
 ```
 cp .env.template .env
 ```
@@ -330,13 +319,11 @@ You will need to configure environment variables for volumes. You can also direc
 Beside these, you can also set other configuration variables in your `.env` file. See [Environment](#environment) section for more details.
 
 2. Start the container
-
 ```
 docker-compose up -d
 ```
 
 3. To view logs
-
 ```
 docker-compose logs -f
 ```
@@ -350,7 +337,6 @@ docker-compose run --rm borgmatic borgmatic list
 ```
 
 If a container is already running, you can execute borgmatic commands in it by running:
-
 ```
 docker-compose exec borgmatic ls
 # or to run a shell
@@ -445,24 +431,20 @@ hooks:
 
 While the parameters defined in above examples are sufficient for regular backups, following additional privileges will
 be needed to mount an archive as FUSE filesystem:
-
 ```
 --cap-add SYS_ADMIN \
 --device /dev/fuse \
 --security-opt label:disable \
 --security-opt apparmor:unconfined
 ```
-
 Depending on your security system, `--security-opt` parameters may not be necessary. `label:disable`
 is needed for *SELinux*, while `apparmor:unconfined` is needed for *AppArmor*.
 
 To init the repo with encryption, run:
-
 ```
 docker exec borgmatic \
 bash -c "borgmatic --init --encryption repokey-blake2"
 ```
 
 ### Additional Reading
-
 [Backup Docker using borgmatic](https://www.modem7.com/books/docker-backup/page/backup-docker-using-borgmatic) - Thank you [@modem7](https://github.com/modem7)
