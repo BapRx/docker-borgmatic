@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:latest
 
-FROM python:3.13.3-alpine3.21 AS base
+FROM postgres:17.0-alpine3.21 AS base
 ARG TARGETARCH
 
 LABEL maintainer='borgmatic-collective'
@@ -61,8 +61,8 @@ RUN <<EOF
         musl-dev            \
         openssl-dev         \
         pkgconfig           \
-        postgresql-client   \
-        sshfs               \
+        python3             \
+        py3-pip             \
         sqlite              \
         tzdata              \
         xxhash-dev          \
@@ -76,8 +76,8 @@ COPY --link requirements.txt /
 RUN --mount=type=cache,id=pip,target=/root/.cache,sharing=locked \
     <<EOF
     set -xe
-    python3 -m pip install -U pip
-    python3 -m pip install -Ur requirements.txt
+    python3 -m pip install -U pip --break-system-packages
+    python3 -m pip install -Ur requirements.txt --break-system-packages
     apk add --no-cache -U borgmatic-bash-completion
 EOF
 
