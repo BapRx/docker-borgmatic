@@ -61,7 +61,7 @@ RUN <<EOF
         musl-dev            \
         openssl-dev         \
         pkgconfig           \
-        python3             \
+        python3-dev         \
         py3-pip             \
         sqlite              \
         tzdata              \
