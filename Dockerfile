@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:latest
 
-FROM postgres:17.0-alpine3.20 as base
+FROM postgres:17.0-alpine3.20 AS base
 ARG TARGETARCH
 
 LABEL maintainer='borgmatic-collective'
@@ -60,7 +60,7 @@ RUN <<EOF
         musl-dev            \
         openssl-dev         \
         pkgconfig           \
-        python3             \
+        python3-dev         \
         py3-pip             \
         sqlite              \
         sshfs               \
