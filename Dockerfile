@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:latest
 
-FROM postgres:17.0-alpine3.21 AS base
+FROM postgres:17-alpine3.21 AS base
 ARG TARGETARCH
 
 LABEL maintainer='borgmatic-collective'
